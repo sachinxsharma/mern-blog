@@ -5,7 +5,7 @@ import Thumbnail from "../images/blog22.jpg";
 
 const PostDetail = () => {
   return (
-    <section className="post-detail">
+    <section className="post-detail ">
       <div className="container post-detail__container">
         <div className="post-detail__header">
           <PostAuthor/>
