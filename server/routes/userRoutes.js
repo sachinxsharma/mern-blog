@@ -2,7 +2,7 @@ const {Router} = require('express')
 const authMiddleware = require('../middleware/authMiddleware')
 
 const {registerUser,loginUser,getAuthors,getUser,changeAvatar,editUser} = require("../controllers/userControllers")
-const middleware = require("../middleware/authMiddleware")
+
 const router = Router()
 
 router.post('/register',registerUser)
