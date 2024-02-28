@@ -26,7 +26,7 @@ const [authors, setAuthors] = useState(authorData)
         authors.map(({id,avatar,name,posts})=>{
           return <Link to={`/posts/users/${id}`} className="author">
             <div className="author__avatar">
-              <img src={avatar} alt={`Image of ${name}`} />
+              <img src={avatar} alt={`img of ${name}`} />
             </div>
             <div className="author__info">
               <h1>{name}</h1>

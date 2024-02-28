@@ -20,11 +20,12 @@ import AuthorsPosts from "./pages/AuthorPosts";
 import Authors from "./pages/Authors";
 import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
+import UserProvider from './context/userContext';
 
 const router = createBrowserRouter([
   {
     path:"/",
-    element:<Layout/>,
+    element:<UserProvider><Layout/></UserProvider>,
     errorElement:<ErrorPage/>,
     children:[
       {index:true, element: <Home/>},

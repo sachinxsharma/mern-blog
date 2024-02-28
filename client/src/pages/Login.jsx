@@ -1,34 +1,58 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+import { UserContext } from '../context/userContext.js';
 
 const Login = () => {
   const [userData, setUserData] = useState({
-    email:'',
-    password:'',
-  })
+    email: '',
+    password: '',
+  });
+
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const { setCurrentUser } = useContext(UserContext);
 
   const changeInputHandler = (e) => {
-    setUserData(preState => {
-      return{...preState, [e.target.name]:e.target.value}
-    })
-  }
+    setUserData((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  };
+
+  const loginUser = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/login`, userData);
+      const user = await response.data;
+      setCurrentUser(user);
+      navigate('/');
+    } catch (err) {
+      console.error("Error:", err); // Log the error for debugging
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
+  };
 
   return (
     <section className="login">
       <div className="container">
         <h2>Sign In</h2>
-        <form className="form login__form">
-          <p className="form__error-message">This is an error Message</p>
-          <input type="text" placeholder="Email "  name='email' value={userData.email} 
-          onChange={changeInputHandler} autoFocus/>
-          <input type="text" placeholder="Password"  name='password' value={userData.password} 
-          onChange={changeInputHandler} />
-          <button type='Submit' className="btn primary">Login</button>
+        <form className="form login__form" onSubmit={loginUser}>
+          {error && <p className="form__error-message">{error}</p>}
+          <input type="email" placeholder="Email" name="email" value={userData.email} onChange={changeInputHandler} autoFocus />
+          <input type="password" placeholder="Password" name="password" value={userData.password} onChange={changeInputHandler} />
+          <button type="submit" className="btn primary">Login</button>
         </form>
-        <small>Don't have an account?<Link to="/register">sign un </Link></small>
+        <small>Don't have an account? <Link to="/register">Sign up</Link></small>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
