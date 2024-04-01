@@ -10,7 +10,7 @@ const Login = () => {
     password: '',
   });
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const { setCurrentUser } = useContext(UserContext);
@@ -21,23 +21,26 @@ const Login = () => {
     });
   };
 
-  const loginUser = async (e) => {
+  const loginUser = async(e) => {
     e.preventDefault();
-    setError('');
+    setError('')
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/login`, userData);
       const user = await response.data;
-      setCurrentUser(user);
-      navigate('/');
+      setCurrentUser(user)
+      navigate('/')
     } catch (err) {
-      console.error("Error:", err); // Log the error for debugging
-      if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message);
-      } else {
-        setError("An unexpected error occurred");
-      }
+      setError(err.response.data.message)
+      
     }
-  };
+
+  }
+
+  
+
+
+
+
 
   return (
     <section className="login">
@@ -45,8 +48,8 @@ const Login = () => {
         <h2>Sign In</h2>
         <form className="form login__form" onSubmit={loginUser}>
           {error && <p className="form__error-message">{error}</p>}
-          <input type="email" placeholder="Email" name="email" value={userData.email} onChange={changeInputHandler} autoFocus />
-          <input type="password" placeholder="Password" name="password" value={userData.password} onChange={changeInputHandler} />
+          <input className='border' type="email" placeholder="Email" name="email" value={userData.email} onChange={changeInputHandler} autoFocus />
+          <input className='border' type="password" placeholder="Password" name="password" value={userData.password} onChange={changeInputHandler} />
           <button type="submit" className="btn primary">Login</button>
         </form>
         <small>Don't have an account? <Link to="/register">Sign up</Link></small>

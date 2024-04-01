@@ -196,7 +196,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.3rem;
     margin-bottom: 4rem;
 }
 
@@ -345,10 +345,12 @@ input , select, textarea {
     height: calc(100vh - 10rem);
     display: grid;
     place-items: center;
+    
 }
 
 .register h2 , .login h2, .create-post h2 {
     margin-bottom: 2rem;
+    
 }
 
 .register small, .login small{
@@ -364,18 +366,22 @@ input , select, textarea {
     background: var(--color-white);
     height: 10rem !important;
 }
+.border{
+    border: 1px solid black;
+    border-radius: 10px;
+}
 
 /* Media query for mobile phone  */
 
 @media screen and (max-width: 800px) {
     h1 {
-        font-size: 2rem;
+        font-size: 1.26rem;
     }
     h2{
-        font-size: 1.5rem;
+        font-size: 1.26rem;
     }
     h3{
-        font-size: 1.35rem;
+        font-size: 1.8rem;
     }
     .container {
         width: var(--container-width-md);
@@ -391,7 +397,8 @@ input , select, textarea {
         top: 5rem;
         right: 0;
         flex-direction: column;
-        gap: o;
+        gap: 0.8rem;
+        
 
     }
     .nav__logo {
@@ -408,11 +415,16 @@ input , select, textarea {
         transform: rotate(90deg);
         transform-origin: top;
     }
+    .nav__menu li a {
+        display: block;
+        background: var(--color-white);
+        padding: 0.85 2.5rem;
+    }
 
     @keyframes dropDown {
         to {
             opacity: 1;
-            transform: rotate(0);
+            transform: rotateX(0);
         }
     }
 
@@ -428,15 +440,15 @@ input , select, textarea {
     }
 
 
-    .nav__menu li a {
+    /* .nav__menu li a {
         display: block;
         background: var(--color-white);
         padding: 0.85rem 2.5rem;
-    }
+    } */
 
     .nav__togglebtn {
         display: inline-block;
-        background-color: transparent;
+        background: transparent;
         font-size: 1.5rem;
         cursor: pointer;
     }
@@ -445,10 +457,12 @@ input , select, textarea {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-
-    .foooter__categories {
+    .footer__categories {
         flex-direction: column;
+        gap: 1.8rem;
     }
+
+
 
     .post-detail {
         width: 100%;
@@ -638,4 +652,11 @@ input , select, textarea {
     display: flex;
     gap: 1rem;
 
+}
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
 }

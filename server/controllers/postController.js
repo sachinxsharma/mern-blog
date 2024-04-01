@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require('fs');
 const { v4: uuid } = require('uuid');
 const HttpError = require('../models/errorModel');
+const { post } = require('../routes/userRoutes');
 
 
 
@@ -72,6 +73,8 @@ const getSinglePost = async (req, res, next) => {
         if (!post) {
             return next(new HttpError("POST NOT FOUND :(", 404))
         }
+        console.log(post)
+        res.status(200).send({data: post})
     } catch (error) {
         return next(new HttpError("user not found , Sorry!"))
     }
@@ -97,6 +100,7 @@ const getUserPosts = async (req, res, next) => {
     try {
         const { id } = req.params;
         const posts = await Post.find({ creator: id }).sort({ createdAt: -1 })
+        res.status(200).send({data: posts})
     } catch (error) {
         return next(new HttpError(error))
     }
@@ -169,48 +173,53 @@ const editPost = async (req, res, next) => {
 
 
 
-        // ----------- delete post
-        // DELETE : api/posts:id
-        //PROTECTED
-        const deletePost = async (req, res, next) => {
-            try {
-                const postId = req.parans.id;
-                if (!postId) {
-                    return next(new HttpError("post unavailable", 400))
-                }
-                const post = await Post.findById(postId);
-                const fileName = post?.thumbnail;
-                if (req.user.id == post.creator) {
-                    //delete thumbnail from uploads folder
-                    fs.unlink(path.join(__dirname, '..', 'uploads', fileName), async (err) => {
-                        if (err) {
-                            return next(new HttpError(err))
-                        } else {
-                            await Post.findByIdAndDelete(postId);
-                            // find user and rreduce post count 
-                            const currentUser = await User.findById(req.user.id);
-                            const userPostCount = currentUser?.posts - 1;
-                            await User.findByIdAndUpdate(req.user.id, { post: userPostCount })
-                        }
-                    })
-                } else {
-                    return next(new HttpError("post couln't be deleted", 403))
-                }
-            } catch (error) {
-                return next(new HttpError(err))
+// ----------- delete post
+// DELETE : api/posts:id
+//PROTECTED
+const deletePost = async (req, res, next) => {
+    try {
+        const postId = req.params.id;
+        if (!postId) {
+            return next(new HttpError("Post Unavilable.", 400));
+        }
+
+        const post = await Post.findById(postId);
+        const fileName = post?.thumbnail;
+
+        // delete thumbnail from uploads folder
+        fs.unlink(path.join(__dirname, '..', 'uploads', fileName), async (err) => {
+            if (err) {
+                return next(new HttpError(err));
+            } else {
+                await Post.findByIdAndDelete(postId);
+
+                // Find user and reduce post count by 1
+                const currentUser = await User.findById(req.user.id);
+                const userPostCount = currentUser?.posts - 1; // Corrected variable name
+
+                await User.findByIdAndUpdate(req.user.id, { posts: userPostCount });
             }
-        }
+        });
+
+        res.json(`Post ${postId} deleted successfully.`);
+    } catch (err) {
+        return next(new HttpError(err));
+    }
+};
 
 
 
-        module.exports = {
-            CreatePost,
-            getCatPosts,
-            getPosts,
-            getSinglePost,
-            getUserPosts,
-            editPost,
-            deletePost
 
 
-        }
+
+module.exports = {
+    CreatePost,
+    getCatPosts,
+    getPosts,
+    getSinglePost,
+    getUserPosts ,
+    editPost,
+    deletePost
+
+
+}
