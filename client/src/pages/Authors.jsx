@@ -5,35 +5,33 @@ import Loader from '../Components/Loader';
 
 const Authors = () => {
   const [authors, setAuthors] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Changed initial value to true
 
-  useEffect(() =>{
-    const getAuthors = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users`)
-        setAuthors(response.data)
-      } catch (error) {
-        console.log(error)
-      }
-      setIsLoading(false)
+  const getAuthors = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users`);
+      setAuthors(response.data);
+    } catch (error) {
+      console.log(error);
     }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     getAuthors();
-  }, [])
+  }, []);
 
-  if(!isLoading){
-    return <Loader/>
+  // Moved the condition for Loader outside of the return statement
+  if (isLoading) {
+    return <Loader />;
   }
-
-
 
   return (
     <section className="authors">
-      {authors.length > 0 ? 
+      {authors && authors.length > 0 ? (
         <div className="container authors__container">
-          {
-            authors.map(({ _id: id, avatar, name, posts }) => {
-            return <Link key={id} to={`/posts/users/${id}`} className="author">
+          {authors.map(({_id:id, avatar, name, posts }) => (
+            <Link key={id} to={`/posts/users/${id}`} className="author">
               <div className="author__avatar">
                 <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${avatar}`} alt={`img of ${name}`} />
               </div>
@@ -42,10 +40,9 @@ const Authors = () => {
                 <p>{posts}</p>
               </div>
             </Link>
-            })
-          }
+          ))}
         </div>
-      : (
+      ) : (
         <h2 className="center">No users/authors found</h2>
       )}
     </section>

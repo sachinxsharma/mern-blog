@@ -28,7 +28,7 @@ const Dashboard = () => {
 
       setIsLoading(true);
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/users${id}`,
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/users/${id}`,
        {withCredentials: true, headers:{Authorization: `Bearer ${token}`}} )
        setPosts(response.data.data)
       } catch (error) {
@@ -56,7 +56,7 @@ const Dashboard = () => {
           return <article key={post.id} className="dashboard__post">
             <div className="dashboard__post-info">
               <div className="dashboard__post-thumbnail">
-                <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnai}`} alt="" />
+                <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`} alt="" />
               </div>
               <h5>{post.title}</h5>
             </div>

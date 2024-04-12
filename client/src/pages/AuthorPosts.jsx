@@ -14,15 +14,14 @@ const AuthorPosts = () => {
       setIsLoading(true);
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/users/${id}`);
-        console.log(response)
-        setPosts(response?.data);
+        setPosts(response?.data.data);
       } catch (err) {
         console.log(err);
       }
       setIsLoading(false);
     }
     fetchPosts();
-  }, []); // Include id in the dependency array to re-fetch posts when id changes
+  }, [id]); // Include id in the dependency array to re-fetch posts when id changes
 
   if (isLoading) {
     return <Loader />;

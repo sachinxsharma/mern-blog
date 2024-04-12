@@ -59,23 +59,23 @@ const UserProfile = () => {
       const userData = new FormData();
       userData.set('name', name);
       userData.set('email', email);
-      userData.set('currentPassword', currentPassword)
-      userData.set('newPassword', newPassword)
-      userData.set('confirmNewPassword', confirmNewPassword)
+      userData.set('currentPassword', currentPassword);
+      userData.set('newPassword', newPassword);
+      userData.set('confirmNewPassword', confirmNewPassword);
   
-  
-      const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/users/
-      editUser`, userData, {withCredentials:true, headers: {Authorization: `Bearer ${token}`}})
-      if(response.status == 200){
-        //log user out 
-        navigate('/logout')
-  
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/users/edit-user`, 
+        userData, 
+        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      if (response.status === 200) {
+        // log user out 
+        navigate('/logout');
       }
     } catch (error) {
       setError(error.response.data.message);
     }
-
-
   }
 
 
