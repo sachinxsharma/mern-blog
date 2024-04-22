@@ -12,4 +12,4 @@ const UserProvider = ({children}) => {
     return <UserContext.Provider value= {{currentUser, setCurrentUser}}>{children}</UserContext.Provider>
 
 }
-export default UserProvider;
+export default UserProvider; 
