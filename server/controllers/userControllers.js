@@ -92,6 +92,7 @@ const getUser = async (req, res, next) => {
 const changeAvatar = async (req, res, next) => {
     try {
         // Check if avatar file is provided
+        // author category data is gettign fetched from here
         if (!req.files.avatar) {
             return next(new HttpError("Please choose an image.", 422));
         }

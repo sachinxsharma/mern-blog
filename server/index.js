@@ -24,6 +24,10 @@ app.use('/uploads', express.static(uploadsDirectory));
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 
+app.get('/', async (req, res) => {
+  res.send('Hello, TypeScript!');
+});
+
 app.use(notFound);
 app.use(errorHandler);
 
