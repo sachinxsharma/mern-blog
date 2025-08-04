@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs'); // ✅ switched to bcryptjs
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
@@ -41,7 +41,7 @@ const registerUser = async (req, res, next) => {
     }
 };
 
-// LOGIN AS REGISTERED USERS
+// LOGIN AS REGISTERED USER
 const loginUser = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -91,16 +91,12 @@ const getUser = async (req, res, next) => {
 // CHANGE USER'S AVATAR PROFILE PICTURE
 const changeAvatar = async (req, res, next) => {
     try {
-        // Check if avatar file is provided
-        // author category data is gettign fetched from here
         if (!req.files.avatar) {
             return next(new HttpError("Please choose an image.", 422));
         }
 
-        // Find user from database
         const user = await User.findById(req.user.id);
 
-        // Delete old avatar if exists
         if (user.avatar) {
             const avatarPath = path.join(__dirname, '..', 'uploads', user.avatar);
             if (fs.existsSync(avatarPath)) {
@@ -110,7 +106,6 @@ const changeAvatar = async (req, res, next) => {
 
         const { avatar } = req.files;
 
-        // Check file size
         if (avatar.size > 500000) {
             return next(new HttpError("Profile picture too big. Should be less than 500kb", 422));
         }
